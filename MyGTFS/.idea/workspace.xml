@@ -2,14 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c00077c1-966f-4f7d-87a1-35eb562084d8" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/MyGTFS/Artificial stop times compressed 1.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/MyGTFS/Artificial stop times compressed 2.txt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/MyGTFS/Compressor3.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MyGTFS/Compressor3.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MyGTFS/META-INF/MyGTFS.kotlin_module" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MyGTFS/stop_times_mine.txt" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MyGTFS/stop_times_mine.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Artificial stop times compressed.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/MyGTFS/DecompressedTransfersProduct.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/MyGTFS/TransfersProduct(old).txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/MyGTFS/stop_times_mine(old).txt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Compressor3.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Compressor3.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/TransferProduct(old 2).txt" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />

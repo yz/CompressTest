@@ -39,10 +39,8 @@ public class Compressor3 {
             while(j < numberOfCols) {
                 if(scanLine.contains(",")) {
                     dataArray[i][j] = scanLine.substring(0, scanLine.indexOf(","));
-                    //System.out.println("Cut , to get: " + dataArray[i][j]);
                 } else {
                     dataArray[i][j] = scanLine;
-                    //System.out.println("used full string to get: " + dataArray[i][j]);
                 }
                 scanLine = scanLine.substring(scanLine.indexOf(",") + 1, scanLine.length());
                 j++;
@@ -61,8 +59,23 @@ public class Compressor3 {
     public static void compressArray(String[][] dataArray, int windowSize) {
         String[] heads = dataArray[0];
         String[] RCQ = new String[heads.length];
+        int SICol = 3, ATcol = 1, DTcol = 2;
         for(int i = 0; i < heads.length; i++) {
             RCQ[i] = "R" + heads[i];
+
+            //Remember what indices represent the columns with these data types
+            switch (heads[i]) {
+                case "stop_id":
+                    SICol = i;
+                    break;
+                case "arrival_time":
+                    ATcol = i;
+                    break;
+                case "departure_time":
+                    DTcol = i;
+                    break;
+            }
+
         }
         for(int currentRow = 1; currentRow < dataArray.length; currentRow++) {
             for(int currentHead = 0; currentHead < heads.length; currentHead++) {
@@ -70,6 +83,10 @@ public class Compressor3 {
                     RCQ[currentHead] = RCQ[currentHead].concat(
                             " " + encodeINC(dataArray[currentRow][currentHead], dataArray[currentRow - 1][currentHead]));
                 } else if(heads[currentHead].equals("stop_id")) { //NOTE: would it be more efficient to do an increasing prefix check?
+                    String[] elementWindowSI = elementWindow(windowSize, dataArray, currentRow, SICol);
+                    RCQ[currentHead] = RCQ[currentHead].concat(
+                            " " + encodeSUCC(dataArray[currentRow][currentHead], elementWindowSI));
+                } else if(heads[currentHead].equals("arrival_time")) {
                     String[] elementWindowSI = elementWindow(windowSize, dataArray, currentRow, currentHead);
                     RCQ[currentHead] = RCQ[currentHead].concat(
                             " " + encodeSUCC(dataArray[currentRow][currentHead], elementWindowSI));
