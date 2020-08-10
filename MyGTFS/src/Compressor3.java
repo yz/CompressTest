@@ -14,33 +14,6 @@ public class Compressor3 {
         //TODO: Replace long strings of "D1" with "D1X20" to represent "D1" repeated 20 times, etc; same for multiple I's
         compressArray(dataArray, windowSize);
 
-
-
-        //Compress the array
-        //LOOK FOR "1,1"??
-        /*for(int i2 = dataArray.length - 1; i2 >= 2; i2--) {
-            *//*for(int j2 = 0; j2 < numberOfCols; j2++) {
-                if(isInteger(dataArray[i2][j2])) {
-                    dataArray[i2][j2] = 0 + "";
-                }
-            }*//*
-            if(dataArray[i2][0].equals(dataArray[i2][1])) {
-                //REPLACE BELOW LINE WITH "1"??
-                dataArray[i2][1] = 1 + "";
-
-            }
-            if(isInteger(dataArray[i2][0]) && isInteger(dataArray[i2-1][0])) {
-                dataArray[i2][0] = (Integer.parseInt(dataArray[i2][0]) - Integer.parseInt(dataArray[i2-1][0])) + "";
-            }
-            if(dataArray[i2][2].equals("2")) {
-                dataArray[i2][2] = "";
-            }
-            if(dataArray[i2][3].equals("180")) {
-                dataArray[i2][3] = "";
-            }
-        }*/
-
-
         printArray(dataArray);
         //writeArray(dataArray);
     }
@@ -91,26 +64,17 @@ public class Compressor3 {
         for(int i = 0; i < heads.length; i++) {
             RCQ[i] = "R" + heads[i];
         }
-        for(int i = 1; i < dataArray.length; i++) {
+        for(int currentRow = 1; currentRow < dataArray.length; currentRow++) {
             for(int currentHead = 0; currentHead < heads.length; currentHead++) {
                 if(heads[currentHead].equals("trip_id") || heads[currentHead].equals("stop_sequence")) {
                     RCQ[currentHead] = RCQ[currentHead].concat(
-                            encodeINC(dataArray[i][currentHead], dataArray[i - 1][currentHead]));
+                            " " + encodeINC(dataArray[currentRow][currentHead], dataArray[currentRow - 1][currentHead]));
                 } else if(heads[currentHead].equals("stop_id")) { //NOTE: would it be more efficient to do an increasing prefix check?
-                    String[] elementWindow;
-                    if(i > windowSize + 1) {
-                        elementWindow = new String[windowSize];
-                    } else {
-                        elementWindow = new String[i - 1];
-                    }
-
-                    for(int j = 0; j < elementWindow.length; j++) {
-                        elementWindow[j] = dataArray[i - j - 1][currentHead];
-                    }
+                    String[] elementWindowSI = elementWindow(windowSize, dataArray, currentRow, currentHead);
                     RCQ[currentHead] = RCQ[currentHead].concat(
-                            encodeSUCC(dataArray[i][currentHead], elementWindow));
+                            " " + encodeSUCC(dataArray[currentRow][currentHead], elementWindowSI));
                 } else {
-                    RCQ[currentHead] =RCQ[currentHead].concat(" " + dataArray[i][currentHead]);
+                    RCQ[currentHead] =RCQ[currentHead].concat(" " + dataArray[currentRow][currentHead]);
                 }
             }
 
@@ -194,10 +158,23 @@ public class Compressor3 {
         return returnCode;
     }
 
+    public static String[] elementWindow(int windowSize, String[][]dataArray, int currentRow, int currentCol) {
+        String[] returnWindow;
+        if(currentRow > windowSize + 1) {
+            returnWindow = new String[windowSize];
+        } else {
+            returnWindow = new String[currentRow - 1];
+        }
+        for(int j = 0; j < returnWindow.length; j++) {
+            returnWindow[j] = dataArray[currentRow - j - 1][currentCol];
+        }
+        return returnWindow;
+    }
+
     /**
      * Checks if a string can be parsed into an integer
-     * I borrowed this method from the Internet and it's also said to be not very fast, so this should be replaced
-     * by a better method in future versions
+     * I borrowed this method from the Internet and it's also said to be not very proper or fast,
+     * so this should be replaced by a better method in future versions
      * @param input the string to check
      * @return true if the string is an integer, false if it is not an integer
      */

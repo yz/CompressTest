@@ -1,7 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="c00077c1-966f-4f7d-87a1-35eb562084d8" name="Default Changelist" comment="" />
+    <list default="true" id="c00077c1-966f-4f7d-87a1-35eb562084d8" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/MyGTFS/Compressor3.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MyGTFS/Compressor3.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/MyGTFS/META-INF/MyGTFS.kotlin_module" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/MyGTFS/stop_times_mine.txt" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MyGTFS/stop_times_mine.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Artificial stop times compressed.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Compressor3.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Compressor3.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/TransferProduct(old 2).txt" beforeDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -15,7 +24,14 @@
       </list>
     </option>
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
   <component name="ProjectId" id="1fmiqFz2ZjUnX9GbLMyz3PxsJ7E" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="PropertiesComponent">
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+  </component>
   <component name="RecentsManager">
     <key name="CopyClassDialog.RECENTS_KEY">
       <recent name="" />
@@ -91,5 +107,16 @@
       <updated>1596829857276</updated>
     </task>
     <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
 </project>
