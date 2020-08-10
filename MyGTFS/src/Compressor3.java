@@ -17,9 +17,10 @@ public class Compressor3 {
 
 
         //TODO: Replace long strings of "D1" with "D1X20" to represent "D1" repeated 20 times, etc; same for multiple I's
-        compressArray(dataArray, windowSize);
+        String[] compressedArray = compressArray(dataArray, windowSize);
 
-        printArray(dataArray);
+        //print2DArray(dataArray);
+        printArray(compressedArray);
         //writeArray(dataArray);
     }
 
@@ -36,7 +37,8 @@ public class Compressor3 {
         //scan the input text file and parse it to an array
         int i = 0;
         int j = 0;
-        int numberOfRows = 250;     //FIND A WAY TO COUNT THE NUMBER OF LINES AND COLUMNS, OR MAKE THE ARRAY ADJUSTABLE
+        //int numberOfRows = 250;     //FIND A WAY TO COUNT THE NUMBER OF LINES AND COLUMNS, OR MAKE THE ARRAY ADJUSTABLE
+        int numberOfRows = readLines("src/stop_times_mine.txt");
         int numberOfCols = 9;
         String[][] dataArray = new String[numberOfRows][numberOfCols];
         while(i < numberOfRows) {
@@ -61,7 +63,7 @@ public class Compressor3 {
      * @param dataArray the array to compress
      * @param windowSize size of the sliding window (number of elements to look back towards, when applicable)
      */
-    public static void compressArray(String[][] dataArray, int windowSize) throws ParseException {
+    public static String[] compressArray(String[][] dataArray, int windowSize) throws ParseException {
         String[] heads = dataArray[0];
         String[] RCQ = new String[heads.length];
         int SICol = 3, ATCol = 1, DTCol = 2;
@@ -104,12 +106,7 @@ public class Compressor3 {
             }
 
         }
-
-        for (String s : RCQ) {
-            System.out.println(s);
-        }
-
-
+        return RCQ;
     }
 
     /**
@@ -254,16 +251,42 @@ public class Compressor3 {
     }
 
     /**
+     * Takes in the address of a file and outputs the number of lines in the file.
+     * NOTE: this is a naive way of counting the number of lines. there are faster,
+     * more efficient ways to count them online, but I'd rather not use them
+     * until I understand them.
+     * @param fileAddress the address of the file
+     * @return the number of lines in the file
+     */
+    public static int readLines(String fileAddress) throws FileNotFoundException {
+        File readFile = new File(fileAddress);
+        Scanner scan = new Scanner(readFile);
+        int numberOfLines = 0;
+        while(scan.hasNextLine()) {
+            scan.nextLine();
+            numberOfLines++;
+        }
+        return numberOfLines;
+    }
+
+
+    /**
      * Takes in a 2D String array and prints its contents to the console
      * @param dataArray the array to print.
      */
-    public static void printArray(String[][] dataArray) {
+    public static void print2DArray(String[][] dataArray) {
         System.out.println("Array print time");
         for(int i = 0; i < dataArray.length; i++) {
             for(int j = 0; j < dataArray[0].length; j++) {
                 System.out.print(dataArray[i][j] + " ");
             }
             System.out.println();
+        }
+    }
+
+    public static void printArray(String[] compressedArray) {
+        for (String s : compressedArray) {
+            System.out.println(s);
         }
     }
 
