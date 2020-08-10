@@ -9,10 +9,10 @@ public class Compressor3 {
 
     public static void main(String args[]) throws IOException {
         String[][] dataArray = GTFSdatatoArray("src/stop_times_mine");
-
+        int windowSize = 100;
 
         //TODO: Replace long strings of "D1" with "D1X20" to represent "D1" repeated 20 times, etc; same for multiple I's
-        compressArray(dataArray);
+        compressArray(dataArray, windowSize);
 
 
 
@@ -58,7 +58,7 @@ public class Compressor3 {
         //scan the input text file and parse it to an array
         int i = 0;
         int j = 0;
-        int numberOfRows = 85;     //FIND A WAY TO COUNT THE NUMBER OF LINES AND COLUMNS, OR MAKE THE ARRAY ADJUSTABLE
+        int numberOfRows = 250;     //FIND A WAY TO COUNT THE NUMBER OF LINES AND COLUMNS, OR MAKE THE ARRAY ADJUSTABLE
         int numberOfCols = 9;
         String[][] dataArray = new String[numberOfRows][numberOfCols];
         while(i < numberOfRows) {
@@ -83,8 +83,9 @@ public class Compressor3 {
     /**
      * Takes the given Array and compresses it
      * @param dataArray the array to compress
+     * @param windowSize size of the sliding window (number of elements to look back towards, when applicable)
      */
-    public static void compressArray(String[][] dataArray) {
+    public static void compressArray(String[][] dataArray, int windowSize) {
         String[] heads = dataArray[0];
         String[] RCQ = new String[heads.length];
         for(int i = 0; i < heads.length; i++) {
@@ -96,8 +97,18 @@ public class Compressor3 {
                     RCQ[currentHead] = RCQ[currentHead].concat(
                             encodeINC(dataArray[i][currentHead], dataArray[i - 1][currentHead]));
                 } else if(heads[currentHead].equals("stop_id")) { //NOTE: would it be more efficient to do an increasing prefix check?
-                    /*RCQ[currentHead] = RCQ[currentHead].concat(
-                            encodeSUCC(dataArray[i][currentHead], dataArray[i - 1][currentHead]));*/
+                    String[] elementWindow;
+                    if(i > windowSize + 1) {
+                        elementWindow = new String[windowSize];
+                    } else {
+                        elementWindow = new String[i - 1];
+                    }
+
+                    for(int j = 0; j < elementWindow.length; j++) {
+                        elementWindow[j] = dataArray[i - j - 1][currentHead];
+                    }
+                    RCQ[currentHead] = RCQ[currentHead].concat(
+                            encodeSUCC(dataArray[i][currentHead], elementWindow));
                 } else {
                     RCQ[currentHead] =RCQ[currentHead].concat(" " + dataArray[i][currentHead]);
                 }
@@ -105,8 +116,8 @@ public class Compressor3 {
 
         }
 
-        for(int i = 0; i < RCQ.length; i++) {
-            System.out.println(RCQ[i]);
+        for (String s : RCQ) {
+            System.out.println(s);
         }
 
 
@@ -120,7 +131,6 @@ public class Compressor3 {
      *          curr if there is no simple way to encode it.
      */
     public static String encodeINC(String curr, String prev) {
-        //System.out.println("Curr = " + curr + ", prev = " + prev);
         String returnCode = "";
         String currSuffix = findSuffix(curr);
         String prevSuffix = findSuffix(prev);
@@ -153,6 +163,35 @@ public class Compressor3 {
             }
         }
         return returnSuffix;
+    }
+
+    /**
+     * Takes in an element and the past X elements in that column (depending on window size),
+     * then encodes curr based on those past elements
+     * Returns "R" + curr otherwise
+     * @param curr the item to encode
+     * @param elementWindow an array of the past X elements
+     * @return "M" if the element before curr has an identical predecessor in the past X elements
+     *      * and the element directly after the predecessor is identical to curr
+     */
+    public static String encodeSUCC(String curr, String[] elementWindow) {
+        String returnCode = "";
+        int pos = -1;
+        for(int i = 1; i < elementWindow.length; i++) {
+            if(elementWindow[0].equals(elementWindow[i])) {
+                pos = i;
+                break;
+            }
+        }
+        //NOTE: Though the paper uses "pos >= 0", I have noticed that pos could never be 0;
+        //by using "pos > 0", the code should function the same way, and doesn't break
+        //if we somehow end up with pos = 0 and try accessing elementWindow[-1].
+        if(pos > 0 && elementWindow[pos - 1].equals(curr)) {
+            returnCode = "M";
+        } else {
+            returnCode = "R" + curr;
+        }
+        return returnCode;
     }
 
     /**
