@@ -2,14 +2,19 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.Scanner;
 
 public class Compressor3 {
 
-    public static void main(String args[]) throws IOException {
+    public static void main(String args[]) throws IOException, ParseException {
         String[][] dataArray = GTFSdatatoArray("src/stop_times_mine");
         int windowSize = 100;
+
+
 
         //TODO: Replace long strings of "D1" with "D1X20" to represent "D1" repeated 20 times, etc; same for multiple I's
         compressArray(dataArray, windowSize);
@@ -56,10 +61,10 @@ public class Compressor3 {
      * @param dataArray the array to compress
      * @param windowSize size of the sliding window (number of elements to look back towards, when applicable)
      */
-    public static void compressArray(String[][] dataArray, int windowSize) {
+    public static void compressArray(String[][] dataArray, int windowSize) throws ParseException {
         String[] heads = dataArray[0];
         String[] RCQ = new String[heads.length];
-        int SICol = 3, ATcol = 1, DTcol = 2;
+        int SICol = 3, ATCol = 1, DTCol = 2;
         for(int i = 0; i < heads.length; i++) {
             RCQ[i] = "R" + heads[i];
 
@@ -69,10 +74,10 @@ public class Compressor3 {
                     SICol = i;
                     break;
                 case "arrival_time":
-                    ATcol = i;
+                    ATCol = i;
                     break;
                 case "departure_time":
-                    DTcol = i;
+                    DTCol = i;
                     break;
             }
 
@@ -87,9 +92,12 @@ public class Compressor3 {
                     RCQ[currentHead] = RCQ[currentHead].concat(
                             " " + encodeSUCC(dataArray[currentRow][currentHead], elementWindowSI));
                 } else if(heads[currentHead].equals("arrival_time")) {
-                    String[] elementWindowSI = elementWindow(windowSize, dataArray, currentRow, currentHead);
+                    String[] elementWindowSI = elementWindow(windowSize, dataArray, currentRow, SICol);
+                    String[] elementWindowAT = elementWindow(windowSize, dataArray, currentRow, ATCol);
+                    String[] elementWindowDT = elementWindow(windowSize, dataArray, currentRow, DTCol);
                     RCQ[currentHead] = RCQ[currentHead].concat(
-                            " " + encodeSUCC(dataArray[currentRow][currentHead], elementWindowSI));
+                            " " + encodeAT(dataArray[currentRow][currentHead], dataArray[currentRow][SICol],
+                            elementWindowAT, elementWindowDT, elementWindowSI));
                 } else {
                     RCQ[currentHead] =RCQ[currentHead].concat(" " + dataArray[currentRow][currentHead]);
                 }
@@ -187,6 +195,46 @@ public class Compressor3 {
         }
         return returnWindow;
     }
+
+    /**
+     * Takes in an element, the corresponding stop ID, and the previous X
+     * arrival times, departure times, and stop IDs, then encodes curr based on those elements
+     * @param curr the item to encode
+     * @param currSI the stop ID corresponding to curr
+     * @param elementWindowAT the past X arrival times
+     * @param elementWindowDT the past X departure times
+     * @param elementWindowSI the past X stop IDs
+     * @return "M" if there is a previous perfect match, "D###" if there is a match with
+     * a time difference, and "R" + curr if there is no match found
+     */
+    public static String encodeAT(String curr, String currSI,
+                                  String[] elementWindowAT, String[] elementWindowDT, String[] elementWindowSI) throws ParseException {
+        if(elementWindowDT.length > 0) {
+            long timediff = timeDifference(curr, elementWindowDT[0]);
+        }
+
+        /*for(int i = 1; i < elementWindowAT.length; i++) {
+            if(currSI.equals(elementWindowSI[i - 1])) {
+
+            }
+        }*/
+        return "";
+    }
+
+    /**
+     * Takes in two strings that are in the form of times, then outputs their difference
+     * in seconds
+     * @param time1 the time to subtract from
+     * @param time2 the time to subtract to time1
+     * @return the time difference, in seconds
+     */
+    public static long timeDifference(String time1, String time2) throws ParseException {
+        SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss");
+        Date date1 = format.parse(time1);
+        Date date2 = format.parse(time2);
+        return ((date2.getTime() - date1.getTime()) / 1000);
+    }
+
 
     /**
      * Checks if a string can be parsed into an integer
