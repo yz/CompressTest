@@ -106,6 +106,15 @@ public class Compressor3 {
             }
 
         }
+        //Quick simplifier of the simpler columns that didn't get compressed
+        //NOTE: This leaves a space at the end of these lines. While this is easily fixable by erasing the last
+        //character, I wonder if there's a more elegant way to format this.
+        for(int currentHead = 0; currentHead < heads.length; currentHead++) {
+            if(heads[currentHead].equals("pickup_type") || heads[currentHead].equals("drop_off_type")) {
+                RCQ[currentHead] = nonZeroCompressor(RCQ[currentHead]);
+            }
+        }
+
         return RCQ;
     }
 
@@ -218,17 +227,31 @@ public class Compressor3 {
         return "";
     }
 
+    public static String nonZeroCompressor(String column) {
+        String returnString = "";
+        int currentIndex = 0;
+        while(column.contains(" ")) {
+            String currentTerm = column.substring(0, column.indexOf(" "));
+            if(!currentTerm.equals("0")) {
+                returnString = returnString.concat(currentIndex + ":" + currentTerm + " ");
+            }
+            column = column.substring(column.indexOf(" ") + 1);
+            currentIndex++;
+        }
+        return returnString;
+    }
+
     /**
      * Takes in two strings that are in the form of times, then outputs their difference
      * in seconds
-     * @param time1 the time to subtract from
-     * @param time2 the time to subtract to time1
+     * @param timeString1 the time to subtract from
+     * @param timeString2 the time to subtract to time1
      * @return the time difference, in seconds
      */
-    public static long timeDifference(String time1, String time2) throws ParseException {
+    public static long timeDifference(String timeString1, String timeString2) throws ParseException {
         SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss");
-        Date date1 = format.parse(time1);
-        Date date2 = format.parse(time2);
+        Date date1 = format.parse(timeString1);
+        Date date2 = format.parse(timeString2);
         return ((date2.getTime() - date1.getTime()) / 1000);
     }
 
