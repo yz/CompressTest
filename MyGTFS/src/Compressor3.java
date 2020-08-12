@@ -217,14 +217,17 @@ public class Compressor3 {
                                   String[] elementWindowAT, String[] elementWindowDT, String[] elementWindowSI) throws ParseException {
         if(elementWindowDT.length > 0) {
             long timediff = timeDifference(curr, elementWindowDT[0]);
-        }
-
-        /*for(int i = 1; i < elementWindowAT.length; i++) {
-            if(currSI.equals(elementWindowSI[i - 1])) {
-
+            for(int i = 1; i < elementWindowAT.length; i++) {
+                //System.out.println("For AT " + curr + "; SI is " + currSI + " and elementWindowSI[i - 1] is " + elementWindowSI[i - 1] + "...also elementWindowSI[0] is " + elementWindowSI[0] + " and elementWindowSI[i] is " + elementWindowSI[i]);
+                if(currSI.equals(elementWindowSI[i - 1]) && elementWindowSI[0].equals(elementWindowSI[i]) &&
+                        timeDifference(elementWindowAT[i - 1], elementWindowDT[i]) == timediff) {
+                    return "M";
+                } else if(currSI.equals(elementWindowSI[i - 1]) && elementWindowSI[0].equals(elementWindowSI[i])) {
+                    return "D" + (timediff - timeDifference(elementWindowAT[i - 1], elementWindowDT[i]));
+                }
             }
-        }*/
-        return "";
+        }
+        return "R" + curr;
     }
 
     public static String nonZeroCompressor(String column) {
