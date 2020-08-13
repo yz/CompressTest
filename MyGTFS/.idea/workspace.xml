@@ -3,8 +3,18 @@
   <component name="ChangeListManager">
     <list default="true" id="c00077c1-966f-4f7d-87a1-35eb562084d8" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/MyGTFS/Artificial stop times compressed 3.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/MyGTFS/Artificial stop times compressed 4.txt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/MyGTFS/Compressor3.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MyGTFS/Compressor3.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/MyGTFS/ZeroCompressorTest.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/MyGTFS/gtfs/stop_times.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/MyGTFS/stop_times_mine.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Artificial stop times compressed 3.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Artificial stop times compressed 4.txt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Compressor3.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Compressor3.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ZeroCompressorTest.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gtfs/stop_times.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/stop_times_mine.txt" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />

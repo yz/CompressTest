@@ -9,19 +9,23 @@ import java.util.LinkedList;
 import java.util.Scanner;
 
 public class Compressor3 {
-
+    static long startTime = System.nanoTime();
     public static void main(String args[]) throws IOException, ParseException {
-        String[][] dataArray = GTFSdatatoArray("src/stop_times_mine");
+
+        String source_address = "src/stop_times.txt";
+        String product_address = "src/stop_times_compressed.txt";
+        String[][] dataArray = GTFSdatatoArray(source_address);
         int windowSize = 100;
 
 
 
         //TODO: Replace long strings of "D1" with "D1X20" to represent "D1" repeated 20 times, etc; same for multiple I's
+        System.out.println("Stage 0 completed at " + ((double)(System.nanoTime() - startTime) / 1_000_000_000));
         String[] compressedArray = compressArray(dataArray, windowSize);
 
         //print2DArray(dataArray);
-        printArray(compressedArray);
-        //writeArray(dataArray);
+        //printArray(compressedArray);
+        writeArray(compressedArray, product_address);
     }
 
     /**
@@ -31,14 +35,14 @@ public class Compressor3 {
      */
     public static  String[][] GTFSdatatoArray(String addressOfFile) throws FileNotFoundException {
         //Generate scanner of the input text file
-        File readFile = new File("src/stop_times_mine.txt");
+        File readFile = new File(addressOfFile);
         Scanner scan = new Scanner(readFile);
 
         //scan the input text file and parse it to an array
         int i = 0;
         int j = 0;
         //int numberOfRows = 250;     //FIND A WAY TO COUNT THE NUMBER OF LINES AND COLUMNS, OR MAKE THE ARRAY ADJUSTABLE
-        int numberOfRows = readLines("src/stop_times_mine.txt");
+        int numberOfRows = readLines(addressOfFile);
         int numberOfCols = 9;
         String[][] dataArray = new String[numberOfRows][numberOfCols];
         while(i < numberOfRows) {
@@ -85,6 +89,9 @@ public class Compressor3 {
 
         }
         for(int currentRow = 1; currentRow < dataArray.length; currentRow++) {
+            if(currentRow % 10000 == 0) {
+                System.out.println("line " + currentRow + " completed at " + ((double)(System.nanoTime() - startTime) / 1_000_000_000));
+            }
             for(int currentHead = 0; currentHead < heads.length; currentHead++) {
                 if(heads[currentHead].equals("trip_id") || heads[currentHead].equals("stop_sequence")) {
                     RCQ[currentHead] = RCQ[currentHead].concat(
@@ -347,21 +354,15 @@ public class Compressor3 {
      * @param dataArray the array to print
      * @throws IOException if the address of the file is invalid
      */
-    public static void writeArray(String[][] dataArray) throws IOException {
+    public static void writeArray(String[] dataArray, String product_address) throws IOException {
         //Set up the file to write to
-        File writeFile = new File("src/TransfersProduct.txt");
+        File writeFile = new File(product_address);
         writeFile.createNewFile();
-        FileWriter writer = new FileWriter("src/TransfersProduct.txt");
+        FileWriter writer = new FileWriter(product_address);
 
         System.out.println("write time");
         for(int i = 0; i < dataArray.length; i++) {
-            //System.out.println(dataArray[i][0] + dataArray[i][1] + dataArray[i][2] + dataArray[i][3]);
-            if(dataArray[i][2].equals("") && dataArray[i][3].equals("")) {
-                writer.write(dataArray[i][0] + "," + dataArray[i][1] + "\n");
-            } else {
-                writer.write(dataArray[i][0] + "," + dataArray[i][1] + "," + dataArray[i][2] + "," + dataArray[i][3] + "\n");
-            }
-
+                writer.write(dataArray[i] + "\n");
         }
         writer.close();
     }
