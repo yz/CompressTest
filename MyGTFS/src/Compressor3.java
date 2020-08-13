@@ -100,6 +100,13 @@ public class Compressor3 {
                     RCQ[currentHead] = RCQ[currentHead].concat(
                             " " + encodeAT(dataArray[currentRow][currentHead], dataArray[currentRow][SICol],
                             elementWindowAT, elementWindowDT, elementWindowSI));
+                } else if(heads[currentHead].equals("departure_time")) {
+                    String[] elementWindowSI = elementWindow(windowSize, dataArray, currentRow, SICol);
+                    String[] elementWindowAT = elementWindow(windowSize, dataArray, currentRow, ATCol);
+                    String[] elementWindowDT = elementWindow(windowSize, dataArray, currentRow, DTCol);
+                    RCQ[currentHead] = RCQ[currentHead].concat(
+                            " " + encodeDT(dataArray[currentRow][currentHead], dataArray[currentRow][SICol],
+                                    dataArray[currentRow][ATCol], elementWindowAT, elementWindowDT, elementWindowSI));
                 } else {
                     RCQ[currentHead] =RCQ[currentHead].concat(" " + dataArray[currentRow][currentHead]);
                 }
@@ -227,6 +234,24 @@ public class Compressor3 {
                 }
             }
         }
+        return "R" + curr;
+    }
+
+    public static String encodeDT(String curr, String currSI, String currAT,
+                                  String[] elementWindowAT, String[] elementWindowDT, String[] elementWindowSI) throws ParseException {
+        long timediff = timeDifference(curr, currAT);
+        if(timediff == 0) {
+            return "A";
+        }
+        for(int i = 1; i < elementWindowAT.length; i++) {
+            if(currSI.equals(elementWindowSI[i]) && timeDifference(elementWindowDT[i], elementWindowAT[i]) == timediff) {
+                return "M";
+            } else if(currSI.equals(elementWindowSI[i])) {
+                return "D" + (timediff - timeDifference(elementWindowDT[i], elementWindowAT[i]));
+            }
+        }
+
+
         return "R" + curr;
     }
 
