@@ -3,18 +3,12 @@
   <component name="ChangeListManager">
     <list default="true" id="c00077c1-966f-4f7d-87a1-35eb562084d8" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MyGTFS/Artificial stop times compressed 3.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MyGTFS/Artificial stop times compressed 4.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MyGTFS/Compressor3.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MyGTFS/Compressor3.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MyGTFS/ZeroCompressorTest.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MyGTFS/gtfs/stop_times.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MyGTFS/stop_times_mine.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Artificial stop times compressed 3.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Artificial stop times compressed 4.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Compressor3.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Compressor3.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ZeroCompressorTest.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gtfs/stop_times.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/stop_times_mine.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Decompressor2mk1.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Test 1 time log.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/deprecated/stop_times_mine.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/deprecated/stop_times_mine_compressed.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/stop_times.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/stop_times_compressed.txt" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -54,7 +48,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.Compressor3">
+  <component name="RunManager" selected="Application.Decompressor3">
     <configuration name="Compressor2" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Compressor2" />
       <module name="MyGTFS" />
@@ -76,13 +70,6 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="Decompressor" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="Decompressor" />
-      <module name="MyGTFS" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="Decompressor2mk1" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Decompressor2mk1" />
       <module name="MyGTFS" />
@@ -90,13 +77,20 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="Decompressor3" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Decompressor3" />
+      <module name="MyGTFS" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.Decompressor3" />
         <item itemvalue="Application.Compressor3" />
         <item itemvalue="Application.Decompressor2mk1" />
         <item itemvalue="Application.Compressor2mk1" />
         <item itemvalue="Application.Compressor2" />
-        <item itemvalue="Application.Decompressor" />
       </list>
     </recent_temporary>
   </component>
