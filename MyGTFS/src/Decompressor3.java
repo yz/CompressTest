@@ -2,6 +2,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class Decompressor3 {
@@ -11,8 +12,8 @@ public class Decompressor3 {
         String product_address = "src/stop_times_mine_decompressed.txt";
         String[] CompressedArray = GTFScompressedDatatoArray(source_address);
         String[][] CompressedArray2D = GTFSArrayto2DArray(CompressedArray);
-
-
+        //GTFSDecompress2DArray(CompressedArray2D);
+        String[] DecompressedArray = GTFSDecompressed2DArraytoArray(CompressedArray2D);
 
 
 /*
@@ -39,8 +40,8 @@ public class Decompressor3 {
 
 
 
-        print2DArray(CompressedArray2D);
-        //printArray(CompressedArray);
+        //print2DArray(CompressedArray2D);
+        printArray(DecompressedArray);
         //writeArray(dataArray);
     }
 
@@ -93,6 +94,20 @@ public class Decompressor3 {
     }
 
 
+    public static String[] GTFSDecompressed2DArraytoArray(String[][] Decompressed2DArray) {
+        int numberOfRows = 250;
+
+        String[] returnArray = new String[numberOfRows];
+        for(int i = 0; i < Decompressed2DArray.length; i++) {
+            returnArray[i] = Decompressed2DArray[i][0];
+        }
+        for(int i = 0; i < Decompressed2DArray.length; i++) {
+            for(int j = 1; j < Decompressed2DArray[0].length; j++) {
+                returnArray[i] = returnArray[i] + "," + Decompressed2DArray[i][j];
+            }
+        }
+        return returnArray;
+    }
 
     /**
      * Checks if a string can be parsed into an integer
