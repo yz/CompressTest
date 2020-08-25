@@ -53,7 +53,7 @@ public class Compressor3 {
                 } else {
                     dataArray[i][j] = scanLine;
                 }
-                scanLine = scanLine.substring(scanLine.indexOf(",") + 1, scanLine.length());
+                scanLine = scanLine.substring(scanLine.indexOf(",") + 1);
                 j++;
             }
             j = 0;
@@ -349,7 +349,7 @@ public class Compressor3 {
     }
 
     /**
-     * Takes in a 2D String array and writes it to a file
+     * Takes in a String array and writes it to a file
      * In future versions, allow input of the file location.
      * @param dataArray the array to print
      * @throws IOException if the address of the file is invalid
