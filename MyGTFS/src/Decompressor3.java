@@ -16,27 +16,6 @@ public class Decompressor3 {
         String[] DecompressedArray = GTFSDecompressed2DArraytoArray(CompressedArray2D);
 
 
-/*
-        int i = 0;
-        int j = 0;
-        while (scan.hasNextLine()) {
-            String scanLine = scan.nextLine();
-            while(scanLine.length() > 0) {
-                if(scanLine.contains(",")) {
-                    dataArray[i][j] = scanLine.substring(0, scanLine.indexOf(","));
-                    scanLine = scanLine.substring(scanLine.indexOf(",") + 1, scanLine.length());
-                } else {
-                    dataArray[i][j] = scanLine;
-                    scanLine = "";
-                }
-
-                j++;
-            }
-            j = 0;
-            i++;
-        }
-*/
-
 
 
 
@@ -151,26 +130,20 @@ public class Decompressor3 {
     }
 
     /**
-     * Takes in a 2D String array and writes it to a file
+     * Takes in a String array and writes it to a file
      * In future versions, allow input of the file location.
      * @param dataArray the array to print
      * @throws IOException if the address of the file is invalid
      */
-    public static void writeArray(String[][] dataArray) throws IOException {
+    public static void writeArray(String[] dataArray, String product_address) throws IOException {
         //Set up the file to write to
-        File writeFile = new File("src/DecompressedTransfersProduct.txt");
+        File writeFile = new File(product_address);
         writeFile.createNewFile();
-        FileWriter writer = new FileWriter("src/DecompressedTransfersProduct.txt");
+        FileWriter writer = new FileWriter(product_address);
 
         System.out.println("write time");
         for(int i = 0; i < dataArray.length; i++) {
-            //System.out.println(dataArray[i][0] + dataArray[i][1] + dataArray[i][2] + dataArray[i][3]);
-            if(dataArray[i][2].equals("") && dataArray[i][3].equals("")) {
-                writer.write(dataArray[i][0] + "," + dataArray[i][1] + "\n");
-            } else {
-                writer.write(dataArray[i][0] + "," + dataArray[i][1] + "," + dataArray[i][2] + "," + dataArray[i][3] + "\n");
-            }
-
+            writer.write(dataArray[i] + "\n");
         }
         writer.close();
     }
