@@ -57,6 +57,17 @@ public class Decompressor3 {
         String[][] dataArray = new String[numberOfRows][numberOfCols];
         for(int j = 0; j < dataArray[0].length; j++) {
             if(!CompressedArray[j].substring(0,1).equals("R")) {
+                for(int i = 0; i < dataArray.length; i++) {
+                    dataArray[i][j] = "0";
+                }
+                String currentString = CompressedArray[j];
+                while(currentString.length() != 0) {    //this is pretty unstable and depends on the fact that the last character of the string is a space.
+                    int indexToUpdate = Integer.parseInt(currentString.substring(0, currentString.indexOf(":")));
+                    dataArray[indexToUpdate][j] = currentString.substring(
+                            currentString.indexOf(":") + 1, currentString.indexOf(" "));
+
+                    currentString = currentString.substring(currentString.indexOf(" ") + 1);
+                }
             } else {
                 String currentString = CompressedArray[j];
                 for(int i = 0; i < dataArray.length; i++) {
