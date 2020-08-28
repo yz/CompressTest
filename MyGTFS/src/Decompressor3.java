@@ -12,7 +12,7 @@ public class Decompressor3 {
         String product_address = "src/stop_times_mine_decompressed.txt";
         String[] CompressedArray = GTFScompressedDatatoArray(source_address);
         String[][] CompressedArray2D = GTFSArrayto2DArray(CompressedArray);
-        //GTFSDecompress2DArray(CompressedArray2D);
+        GTFSDecompress2DArray(CompressedArray2D);
         String[] DecompressedArray = GTFSDecompressed2DArraytoArray(CompressedArray2D);
 
 
@@ -83,6 +83,60 @@ public class Decompressor3 {
         return dataArray;
     }
 
+    public static void GTFSDecompress2DArray(String[][] CompressedArray2D) {
+        String[] heads = CompressedArray2D[0];
+        int SICol = 3, ATCol = 1, DTCol = 2;
+        for(int i = 0; i < heads.length; i++) {
+            //Remember what indices represent the columns with these data types
+            switch (heads[i]) {
+                case "stop_id":
+                    SICol = i;
+                    break;
+                case "arrival_time":
+                    ATCol = i;
+                    break;
+                case "departure_time":
+                    DTCol = i;
+                    break;
+            }
+        }
+        for(int currentRow = 0; currentRow < CompressedArray2D.length; currentRow++) {
+            for(int currentCol = 0; currentCol < CompressedArray2D[0].length; currentCol++) {
+                String currentElement = CompressedArray2D[currentRow][currentCol];
+
+                if(currentElement.length() > 0) {
+                    if(currentElement.substring(0,1).equals("R")) {
+                        CompressedArray2D[currentRow][currentCol] = currentElement.substring(1);
+                    } else if(currentElement.equals("I")) {
+                        CompressedArray2D[currentRow][currentCol] = CompressedArray2D[currentRow - 1][currentCol];
+                    } else if(currentElement.substring(0,1).equals("D")) {      //Note: this only counts for stop sequences and not time differences
+                        String prev = CompressedArray2D[currentRow - 1][currentCol];
+                        String prevSuffix = findSuffix(prev);
+                        String prevPrefix = prev.substring(0, prev.length() - prevSuffix.length());
+                        String currSuffix = currentElement.substring(1);
+                        CompressedArray2D[currentRow][currentCol] = prevPrefix + (Integer.parseInt(currSuffix) + Integer.parseInt(prevSuffix));
+                    } else if(currentElement.substring(0,1).equals("M")) {
+                        if(currentCol == SICol) {      //Remove this condition once other cases of "M" are resolved
+                            int currentPointer = currentRow - 2;
+                            String predecessor = CompressedArray2D[currentRow - 1][currentCol];
+                            while(currentPointer >= 0) {
+                                if(CompressedArray2D[currentPointer][currentCol].equals(predecessor)) {
+                                    CompressedArray2D[currentRow][currentCol] = CompressedArray2D[currentPointer + 1][currentCol];
+                                    break;
+                                }
+                                currentPointer--;
+                            }
+                        }
+                    }
+                }
+
+
+            }
+        }
+
+
+
+    }
 
     public static String[] GTFSDecompressed2DArraytoArray(String[][] Decompressed2DArray) {
         int numberOfRows = 250;
@@ -115,6 +169,25 @@ public class Decompressor3 {
             return false;
         }
     }
+
+    /**
+     * Takes in a string and finds the longest suffix that is an integer
+     * @param thisString the string to fix a suffix of
+     * @return the integer suffix of the string
+     */
+    public static String findSuffix(String thisString) {
+        String returnSuffix = "";
+        for(int i = 1; i <= thisString.length(); i++) {
+            String currentSuffix = thisString.substring(thisString.length() - i);
+            if(isInteger(currentSuffix)) {
+                returnSuffix = currentSuffix;
+            }  else {
+                return returnSuffix;
+            }
+        }
+        return returnSuffix;
+    }
+
 
     /**
      * Takes in a 2D String array and prints its contents to the console
