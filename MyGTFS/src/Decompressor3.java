@@ -104,6 +104,8 @@ public class Decompressor3 {
             }
         }
 
+
+        //Decompresses Stop ID column
         for(int currentRow = 0; currentRow < CompressedArray2D.length; currentRow++) {
             String currentElement = CompressedArray2D[currentRow][SICol];
             if(currentElement.substring(0,1).equals("R")) {
@@ -121,6 +123,7 @@ public class Decompressor3 {
             }
         }
 
+        //Decompresses columns other than Arrival Times and Departure times' "M" cases
         for(int currentRow = 0; currentRow < CompressedArray2D.length; currentRow++) {
             for(int currentCol = 0; currentCol < CompressedArray2D[0].length; currentCol++) {
                 String currentElement = CompressedArray2D[currentRow][currentCol];
@@ -177,6 +180,74 @@ public class Decompressor3 {
                 }
 
 
+            }
+        }
+
+        //Decompresses Arrival Times and Departure times
+        for(int currentRow = 0; currentRow < CompressedArray2D.length; currentRow++) {
+            //Arrival time for this row
+                String currentElement = CompressedArray2D[currentRow][ATCol];
+                if(currentElement.length() > 0) {
+                    if(currentElement.substring(0,1).equals("M")) {
+                        /*
+                        long timediff = timeDifference(currentElement, CompressedArray2D[currentRow - 1][ATCol]);
+                        for(int j = 2; j <= currentRow; j++) {
+                            if(CompressedArray2D[currentRow][SICol].equals(CompressedArray2D[currentRow - (j - 1)][SICol])
+                            && CompressedArray2D[currentRow][SICol - 1].equals(CompressedArray2D[currentRow - j][SICol])) {
+
+                            }
+                        }
+                        */
+                        int currentPointer = currentRow - 2;
+                        String predecessorID = CompressedArray2D[currentRow - 1][SICol];
+                        String currentID = CompressedArray2D[currentRow][SICol];
+                        //String predecessor = CompressedArray2D[currentRow - 1][currentCol];
+                        while(currentPointer > 0) {
+                           // System.out.println("PredecessorID: " + predecessorID + " currentID: " + currentID +
+                            //        " pointer current: " + CompressedArray2D[currentPointer][SICol] + " Pointer future: " + CompressedArray2D[currentPointer + 1][SICol]);
+                            if(CompressedArray2D[currentPointer + 1][SICol].equals(currentID)
+                                    && CompressedArray2D[currentPointer][SICol].equals(predecessorID)) {
+                                System.out.println("Found match:" + "PredecessorID: " + predecessorID + " currentID: " + currentID +
+                                                " pointer current: " + CompressedArray2D[currentPointer][SICol] + " Pointer future: " + CompressedArray2D[currentPointer + 1][SICol]);
+                                //System.out.println("timediff = " + CompressedArray2D[currentPointer + 1][ATCol] + " - " + CompressedArray2D[currentPointer][DTCol]);
+                                long timeDiff = timeDifference(CompressedArray2D[currentPointer + 1][ATCol], CompressedArray2D[currentPointer][DTCol]);
+                                String timeDiffString = toTimeString(timeDiff);
+                                //System.out.println("CurrentAT = " + timeDiffString + " + " + CompressedArray2D[currentRow - 1][DTCol]);
+                                long currentAT = timeSum("" + timeDiffString, CompressedArray2D[currentRow - 1][DTCol]);       //CANT GET SECOND TERM OF CURRENTDT TO WORK
+                                String currentATString = toTimeString(currentAT);
+                                //System.out.println(currentAT + " = " + currentATString);
+                                CompressedArray2D[currentRow][ATCol] = "" + currentATString;
+                                break;
+                            }
+                            currentPointer--;
+                        }
+                    }
+                }
+            //Departure time for this row
+            currentElement = CompressedArray2D[currentRow][DTCol];
+            if(currentElement.length() > 0) {
+                if(currentElement.substring(0,1).equals("M")) {
+                    int currentPointer = currentRow - 2;
+                    String predecessorID = CompressedArray2D[currentRow - 1][SICol];
+                    String currentID = CompressedArray2D[currentRow][SICol];
+                    //String predecessor = CompressedArray2D[currentRow - 1][currentCol];
+                    while(currentPointer > 0) {
+                        //System.out.println("PredecessorID: " + predecessorID + " currentID: " + currentID +
+                         //       " pointer current: " + CompressedArray2D[currentPointer][SICol]);
+                        if(CompressedArray2D[currentPointer][SICol].equals(currentID)) {
+                            //System.out.println("Found match");
+                            //System.out.println("timediff = " + CompressedArray2D[currentPointer][DTCol] + " - " + CompressedArray2D[currentPointer][ATCol]);
+                            long timeDiff = timeDifference(CompressedArray2D[currentPointer][DTCol], CompressedArray2D[currentPointer][ATCol]);
+                            String timeDiffString = toTimeString(timeDiff);
+                            //System.out.println("CurrentDT = " + timeDiffString + " + " + CompressedArray2D[currentRow][ATCol]);
+                            long currentDT = timeSum(" " + timeDiffString, CompressedArray2D[currentRow][ATCol]);       //CANT GET SECOND TERM OF CURRENTDT TO WORK
+                            String currentDTString = toTimeString(currentDT);
+                            CompressedArray2D[currentRow][DTCol] = "" + currentDTString;
+                            break;
+                        }
+                        currentPointer--;
+                    }
+                }
             }
         }
 
@@ -264,8 +335,10 @@ public class Decompressor3 {
      */
     public static long timeSum(String timeString1, String timeString2) throws ParseException {
         SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss");
+        format.setTimeZone(java.util.TimeZone.getTimeZone("GMT"));
         Date date1 = format.parse(timeString1);
         Date date2 = format.parse(timeString2);
+        //System.out.println("date2:" + (date2.getTime() / 1000) + " date1:" + (date1.getTime() / 1000));
         return ((date2.getTime() + date1.getTime()) / 1000);
     }
 
