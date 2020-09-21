@@ -139,47 +139,10 @@ public class Decompressor3 {
                         String prevPrefix = prev.substring(0, prev.length() - prevSuffix.length());
                         String currSuffix = currentElement.substring(1);
                         CompressedArray2D[currentRow][currentCol] = prevPrefix + (Integer.parseInt(currSuffix) + Integer.parseInt(prevSuffix));
-                    } /*else if(currentElement.substring(0,1).equals("M")) {
-                        if(currentCol == ATCol) {
-                            int currentPointer = currentRow - 2;
-                            String predecessorID = CompressedArray2D[currentRow - 1][SICol];
-                            String currentID = CompressedArray2D[currentRow][SICol];
-                            //String predecessor = CompressedArray2D[currentRow - 1][currentCol];
-                            while(currentPointer > 0) {
-                                System.out.println("PredecessorID: " + predecessorID + " currentID: " + currentID +
-                                        " pointer current: " + CompressedArray2D[currentPointer][SICol] + " Pointer future: " + CompressedArray2D[currentPointer + 1][SICol]);
-                                if(CompressedArray2D[currentPointer + 1][SICol].equals(currentID)
-                                && CompressedArray2D[currentPointer][SICol].equals(predecessorID)) {
-                                    System.out.println("Found match");
-                                    System.out.println("timediff = " + CompressedArray2D[currentPointer + 1][ATCol] + " - " + CompressedArray2D[currentPointer][DTCol]);
-                                    long timeDiff = timeDifference(CompressedArray2D[currentPointer + 1][ATCol], CompressedArray2D[currentPointer][DTCol]);
-                                    String timeDiffString = toTimeString(timeDiff);
-                                    System.out.println("CurrentDT = " + timeDiffString + " + " + CompressedArray2D[currentRow - 1][DTCol]);
-                                    long currentDT = timeSum(" " + timeDiffString, CompressedArray2D[currentRow - 1][DTCol]);       //CANT GET SECOND TERM OF CURRENTDT TO WORK
-                                    String currentDTString = toTimeString(currentDT);
-                                    CompressedArray2D[currentRow][currentCol] = " " + currentDTString;
-                                    break;
-                                }
-                                currentPointer--;
-                            }
-                        }
-*//*                        if(currentCol == SICol) {      //Remove this condition once other cases of "M" are resolved
-                            int currentPointer = currentRow - 2;
-                            String predecessor = CompressedArray2D[currentRow - 1][currentCol];
-                            while(currentPointer >= 0) {
-                                if(CompressedArray2D[currentPointer][currentCol].equals(predecessor)) {
-                                    CompressedArray2D[currentRow][currentCol] = CompressedArray2D[currentPointer + 1][currentCol];
-                                    break;
-                                }
-                                currentPointer--;
-                            }
-                        }*//*
-                    } */else if(currentElement.substring(0,1).equals("A")) {
+                    } else if(currentElement.substring(0,1).equals("A")) {
                         CompressedArray2D[currentRow][currentCol] = CompressedArray2D[currentRow][ATCol];
                     }
                 }
-
-
             }
         }
 
@@ -189,33 +152,18 @@ public class Decompressor3 {
                 String currentElement = CompressedArray2D[currentRow][ATCol];
                 if(currentElement.length() > 0) {
                     if(currentElement.substring(0,1).equals("M")) {
-                        /*
-                        long timediff = timeDifference(currentElement, CompressedArray2D[currentRow - 1][ATCol]);
-                        for(int j = 2; j <= currentRow; j++) {
-                            if(CompressedArray2D[currentRow][SICol].equals(CompressedArray2D[currentRow - (j - 1)][SICol])
-                            && CompressedArray2D[currentRow][SICol - 1].equals(CompressedArray2D[currentRow - j][SICol])) {
-
-                            }
-                        }
-                        */
                         int currentPointer = currentRow - 2;
                         String predecessorID = CompressedArray2D[currentRow - 1][SICol];
                         String currentID = CompressedArray2D[currentRow][SICol];
-                        //String predecessor = CompressedArray2D[currentRow - 1][currentCol];
                         while(currentPointer > 0) {
-                           // System.out.println("PredecessorID: " + predecessorID + " currentID: " + currentID +
-                            //        " pointer current: " + CompressedArray2D[currentPointer][SICol] + " Pointer future: " + CompressedArray2D[currentPointer + 1][SICol]);
                             if(CompressedArray2D[currentPointer + 1][SICol].equals(currentID)
                                     && CompressedArray2D[currentPointer][SICol].equals(predecessorID)) {
                                 System.out.println("Found match:" + "PredecessorID: " + predecessorID + " currentID: " + currentID +
                                                 " pointer current: " + CompressedArray2D[currentPointer][SICol] + " Pointer future: " + CompressedArray2D[currentPointer + 1][SICol]);
-                                //System.out.println("timediff = " + CompressedArray2D[currentPointer + 1][ATCol] + " - " + CompressedArray2D[currentPointer][DTCol]);
                                 long timeDiff = timeDifference(CompressedArray2D[currentPointer + 1][ATCol], CompressedArray2D[currentPointer][DTCol]);
                                 String timeDiffString = toTimeString(timeDiff);
-                                //System.out.println("CurrentAT = " + timeDiffString + " + " + CompressedArray2D[currentRow - 1][DTCol]);
-                                long currentAT = timeSum("" + timeDiffString, CompressedArray2D[currentRow - 1][DTCol]);       //CANT GET SECOND TERM OF CURRENTDT TO WORK
+                                long currentAT = timeSum("" + timeDiffString, CompressedArray2D[currentRow - 1][DTCol]);
                                 String currentATString = toTimeString(currentAT);
-                                //System.out.println(currentAT + " = " + currentATString);
                                 CompressedArray2D[currentRow][ATCol] = "" + currentATString;
                                 break;
                             }
@@ -228,19 +176,12 @@ public class Decompressor3 {
             if(currentElement.length() > 0) {
                 if(currentElement.substring(0,1).equals("M")) {
                     int currentPointer = currentRow - 2;
-                    String predecessorID = CompressedArray2D[currentRow - 1][SICol];
                     String currentID = CompressedArray2D[currentRow][SICol];
-                    //String predecessor = CompressedArray2D[currentRow - 1][currentCol];
                     while(currentPointer > 0) {
-                        //System.out.println("PredecessorID: " + predecessorID + " currentID: " + currentID +
-                         //       " pointer current: " + CompressedArray2D[currentPointer][SICol]);
                         if(CompressedArray2D[currentPointer][SICol].equals(currentID)) {
-                            //System.out.println("Found match");
-                            //System.out.println("timediff = " + CompressedArray2D[currentPointer][DTCol] + " - " + CompressedArray2D[currentPointer][ATCol]);
                             long timeDiff = timeDifference(CompressedArray2D[currentPointer][DTCol], CompressedArray2D[currentPointer][ATCol]);
                             String timeDiffString = toTimeString(timeDiff);
-                            //System.out.println("CurrentDT = " + timeDiffString + " + " + CompressedArray2D[currentRow][ATCol]);
-                            long currentDT = timeSum(" " + timeDiffString, CompressedArray2D[currentRow][ATCol]);       //CANT GET SECOND TERM OF CURRENTDT TO WORK
+                            long currentDT = timeSum(" " + timeDiffString, CompressedArray2D[currentRow][ATCol]);
                             String currentDTString = toTimeString(currentDT);
                             CompressedArray2D[currentRow][DTCol] = "" + currentDTString;
                             break;
@@ -338,7 +279,6 @@ public class Decompressor3 {
         format.setTimeZone(java.util.TimeZone.getTimeZone("GMT"));
         Date date1 = format.parse(timeString1);
         Date date2 = format.parse(timeString2);
-        //System.out.println("date2:" + (date2.getTime() / 1000) + " date1:" + (date1.getTime() / 1000));
         return ((date2.getTime() + date1.getTime()) / 1000);
     }
 
