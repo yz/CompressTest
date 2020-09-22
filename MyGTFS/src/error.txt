@@ -1,0 +1,43 @@
+line 230000 completed at 33.557455
+line 240000 completed at 34.6184203
+line 250000 completed at 35.5706595
+line 260000 completed at 36.4812048
+line 270000 completed at 37.3851546
+line 280000 completed at 38.2357792
+line 290000 completed at 39.0535493
+line 300000 completed at 39.8490807
+line 310000 completed at 40.62368
+line 320000 completed at 41.3687105
+line 330000 completed at 42.0721257
+line 340000 completed at 42.7603596
+line 350000 completed at 43.4203407
+line 360000 completed at 44.051778
+line 370000 completed at 44.6502563
+line 380000 completed at 45.2069158
+line 390000 completed at 45.7220938
+line 400000 completed at 46.4066647
+line 410000 completed at 46.8099878
+line 420000 completed at 47.1836325
+line 430000 completed at 47.531913
+line 440000 completed at 47.8509173
+line 450000 completed at 48.1272336
+line 460000 completed at 48.3847994
+line 470000 completed at 48.6115574
+line 480000 completed at 48.8080207
+line 490000 completed at 48.9787364
+line 500000 completed at 49.1168294
+line 510000 completed at 49.2287364
+line 520000 completed at 49.3070956
+line 530000 completed at 49.3609965
+line 540000 completed at 49.3928941
+Array formation at 49.3968267
+2D array formation at 49.5699295
+Decompression at 307.0000475
+Stage 1 completed at 307.1089752
+line 0 completed at 307.1093081
+Exception in thread "main" java.lang.NumberFormatException: For input string: ""
+	at java.base/java.lang.NumberFormatException.forInputString(NumberFormatException.java:65)
+	at java.base/java.lang.Integer.parseInt(Integer.java:662)
+	at java.base/java.lang.Integer.parseInt(Integer.java:770)
+	at Decompressor3.GTFSDecompress2DArray(Decompressor3.java:149)
+	at Decompressor3.main(Decompressor3.java:23)

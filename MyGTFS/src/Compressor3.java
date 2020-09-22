@@ -41,7 +41,6 @@ public class Compressor3 {
         //scan the input text file and parse it to an array
         int i = 0;
         int j = 0;
-        //int numberOfRows = 250;     //FIND A WAY TO COUNT THE NUMBER OF LINES AND COLUMNS, OR MAKE THE ARRAY ADJUSTABLE
         int numberOfRows = readLines(addressOfFile);
         int numberOfCols = 9;
         String[][] dataArray = new String[numberOfRows][numberOfCols];

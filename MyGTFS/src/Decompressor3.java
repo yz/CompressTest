@@ -11,20 +11,25 @@ import java.util.Scanner;
 public class Decompressor3 {
     static long startTime = System.nanoTime();
     public static void main(String args[]) throws IOException, ParseException {
-        String source_address = "src/stop_times_mine_compressed.txt";
-        String product_address = "src/stop_times_mine_decompressed.txt";
+        String source_address = "src/stop_times_compressed.txt";
+        String product_address = "src/stop_times_decompressed.txt";
+        System.out.println("Start at " + ((double)(System.nanoTime() - startTime) / 1_000_000_000));
+        int numberOfRows = readLinesDecompress(source_address);
+        System.out.println("Array formation at " + ((double)(System.nanoTime() - startTime) / 1_000_000_000));
         String[] CompressedArray = GTFScompressedDatatoArray(source_address);
-        String[][] CompressedArray2D = GTFSArrayto2DArray(CompressedArray);
+        System.out.println("2D array formation at " + ((double)(System.nanoTime() - startTime) / 1_000_000_000));
+        String[][] CompressedArray2D = GTFSArrayto2DArray(CompressedArray, numberOfRows);
+        System.out.println("Decompression at " + ((double)(System.nanoTime() - startTime) / 1_000_000_000));
         GTFSDecompress2DArray(CompressedArray2D);
-        String[] DecompressedArray = GTFSDecompressed2DArraytoArray(CompressedArray2D);
+        String[] DecompressedArray = GTFSDecompressed2DArraytoArray(CompressedArray2D, numberOfRows);
 
 
 
 
 
         //print2DArray(CompressedArray2D);
-        printArray(DecompressedArray);
-        //writeArray(dataArray);
+        //printArray(DecompressedArray);
+        writeArray(DecompressedArray, product_address);
     }
 
     /**
@@ -54,8 +59,7 @@ public class Decompressor3 {
      * @param CompressedArray the 1-dimensional String array
      * @return the array converted to 2D
      */
-    public static String[][] GTFSArrayto2DArray(String[] CompressedArray) {
-        int numberOfRows = 250;
+    public static String[][] GTFSArrayto2DArray(String[] CompressedArray, int numberOfRows) {
         int numberOfCols = 9;
         String[][] dataArray = new String[numberOfRows][numberOfCols];
         for(int j = 0; j < dataArray[0].length; j++) {
@@ -122,9 +126,13 @@ public class Decompressor3 {
                 }
             }
         }
-
+        System.out.println("Stage 1 completed at " + ((double)(System.nanoTime() - startTime) / 1_000_000_000));
         //Decompresses columns other than Arrival Times and Departure times' "M" cases
+
         for(int currentRow = 0; currentRow < CompressedArray2D.length; currentRow++) {
+            if(currentRow % 10000 == 0) {
+                System.out.println("line " + currentRow + " completed at " + ((double)(System.nanoTime() - startTime) / 1_000_000_000));
+            }
             for(int currentCol = 0; currentCol < CompressedArray2D[0].length; currentCol++) {
                 String currentElement = CompressedArray2D[currentRow][currentCol];
 
@@ -138,14 +146,14 @@ public class Decompressor3 {
                         String prevSuffix = findSuffix(prev);
                         String prevPrefix = prev.substring(0, prev.length() - prevSuffix.length());
                         String currSuffix = currentElement.substring(1);
-                        CompressedArray2D[currentRow][currentCol] = prevPrefix + (Integer.parseInt(currSuffix) + Integer.parseInt(prevSuffix));
+                        CompressedArray2D[currentRow][currentCol] = prevPrefix + (Integer.parseInt(currSuffix) + Integer.parseInt(prevSuffix)); //Error here: see error file
                     } else if(currentElement.substring(0,1).equals("A")) {
                         CompressedArray2D[currentRow][currentCol] = CompressedArray2D[currentRow][ATCol];
                     }
                 }
             }
         }
-
+        System.out.println("Stage 2 completed at " + ((double)(System.nanoTime() - startTime) / 1_000_000_000));
         //Decompresses Arrival Times and Departure times
         for(int currentRow = 0; currentRow < CompressedArray2D.length; currentRow++) {
             //Arrival time for this row
@@ -158,8 +166,6 @@ public class Decompressor3 {
                         while(currentPointer > 0) {
                             if(CompressedArray2D[currentPointer + 1][SICol].equals(currentID)
                                     && CompressedArray2D[currentPointer][SICol].equals(predecessorID)) {
-                                System.out.println("Found match:" + "PredecessorID: " + predecessorID + " currentID: " + currentID +
-                                                " pointer current: " + CompressedArray2D[currentPointer][SICol] + " Pointer future: " + CompressedArray2D[currentPointer + 1][SICol]);
                                 long timeDiff = timeDifference(CompressedArray2D[currentPointer + 1][ATCol], CompressedArray2D[currentPointer][DTCol]);
                                 String timeDiffString = toTimeString(timeDiff);
                                 long currentAT = timeSum("" + timeDiffString, CompressedArray2D[currentRow - 1][DTCol]);
@@ -196,8 +202,7 @@ public class Decompressor3 {
 
     }
 
-    public static String[] GTFSDecompressed2DArraytoArray(String[][] Decompressed2DArray) {
-        int numberOfRows = 250;
+    public static String[] GTFSDecompressed2DArraytoArray(String[][] Decompressed2DArray, int numberOfRows) {
 
         String[] returnArray = new String[numberOfRows];
         for(int i = 0; i < Decompressed2DArray.length; i++) {
@@ -210,6 +215,30 @@ public class Decompressor3 {
         }
         return returnArray;
     }
+
+    /**
+     * Takes in the address of a file and outputs the number of lines in the destination file.
+     * This is done by counting the number of spaces on the first line.
+     * NOTE: This works on the expectation that items are separated by spaces, and no item
+     * has a space in it.
+     * @param fileAddress the address of the file
+     * @return the number of lines in the file
+     */
+    public static int readLinesDecompress(String fileAddress) throws FileNotFoundException {
+        File readFile = new File(fileAddress);
+        Scanner scan = new Scanner(readFile);
+        int numberOfLines = 1;
+        String firstLine = scan.nextLine();
+        while(firstLine.contains(" ")) {
+            if(numberOfLines % 10000 == 0) {
+                System.out.println("line " + numberOfLines + " completed at " + ((double)(System.nanoTime() - startTime) / 1_000_000_000));
+            }
+            firstLine = firstLine.substring(firstLine.indexOf(" ") + 1);
+            numberOfLines++;
+        }
+        return numberOfLines;
+    }
+
 
     /**
      * Checks if a string can be parsed into an integer
